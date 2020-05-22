@@ -45,9 +45,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Myauth.apps.MyauthConfig',
     'django.contrib.sites',
+    'mdeditor',
     'rest_framework',
     'rest_framework_jwt',
-    'mdeditor',
+
+
+    # celery
+    'djcelery',
+    'celery_app',
+    # 'celery_test_app.apps.CeleryTestAppConfig',
 ]
 
 MIDDLEWARE = [
@@ -244,3 +250,29 @@ LOGGING = {
 
 # 未登录重定向url
 REDIRECT_FIELD_NAME = 'login/'
+
+
+#############################
+# celery 配置信息 start
+#############################
+# import djcelery
+# djcelery.setup_loader()
+# BROKER_URL = 'redis://127.0.0.1:6379/1'
+# CELERY_IMPORTS = ('celery_test_app.tasks')
+# CELERY_TIMEZONE = 'Asia/Shanghai'
+# CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+# from celery.schedules import crontab
+# from celery.schedules import timedelta
+#
+# CELERYBEAT_SCHEDULE = {    #定时器策略
+#     #定时任务一：　每隔30s运行一次
+#     u'测试定时器1': {
+#         "task": "art.tasks.tsend_email",
+#         #"schedule": crontab(minute='*/2'),  # or 'schedule':   timedelta(seconds=3),
+#         "schedule":timedelta(seconds=30),
+#         "args": (),
+#     },
+# }
+#############################
+# celery 配置信息 end
+#############################
