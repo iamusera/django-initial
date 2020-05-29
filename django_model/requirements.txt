@@ -112,7 +112,7 @@ happybase==1.1.0
 har2case==0.3.1
 hpack==3.0.0
 html2text==2020.1.16
-httplib2==0.9.2
+httplib2==0.18.0
 httprunner==2.2.4
 humanize==0.5.1
 hyperframe==5.2.0
