@@ -26,7 +26,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/ccelery_app" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/django_model" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -37,8 +37,9 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="E:\my_\django_model\ccelery_app" />
       <recent name="E:\my_\django_model\django_model" />
+      <recent name="E:\my_\django_model\tests_" />
+      <recent name="E:\my_\django_model\ccelery_app" />
     </key>
   </component>
   <component name="RunManager">
@@ -81,7 +82,9 @@
       <workItem from="1588207206670" duration="7370000" />
       <workItem from="1588230560032" duration="9220000" />
       <workItem from="1589963633744" duration="6283000" />
-      <workItem from="1590110331898" duration="8427000" />
+      <workItem from="1590110331898" duration="9817000" />
+      <workItem from="1590718776059" duration="6199000" />
+      <workItem from="1590735630732" duration="15447000" />
     </task>
     <servers />
   </component>
@@ -89,13 +92,17 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="361" y="74" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1590119196014">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="361" y="74" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1590119196014" />
     <state x="499" y="162" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1590116363912">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="499" y="162" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824@0.0.1536.824" timestamp="1590116363912" />
-    <state x="272" y="57" key="SettingsEditor" timestamp="1588164559640">
+    <state x="272" y="57" key="SettingsEditor" timestamp="1590119435535">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="272" y="57" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1588164559640" />
+    <state x="272" y="57" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1590119435535" />
   </component>
 </project>

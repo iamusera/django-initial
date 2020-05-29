@@ -13,9 +13,6 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 
 
-def env_to_bool(env, default):
-    str_val = os.environ.get(env)
-    return default if str_val is None else str_val == 'True'
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -28,10 +25,17 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'aij0j2m(35nm(ug3*og&(zmtn+h_pwb=8dm@yqgce9fm0cw03y'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env_to_bool('DJANGO_DEBUG', True)
 
-ALLOWED_HOSTS = ['*', '127.0.0.1', 'example.com']
+# def env_to_bool(env, default):
+#     str_val = os.environ.get(env)
+#     return default if str_val is None else str_val == 'True'
+#
+#
+# # SECURITY WARNING: don't run with debug turned on in production!
+# # 环境变量没有加DJANGO_DEBUG，式中为TRUE
+# DEBUG = env_to_bool('DJANGO_DEBUG', False)
+DEBUG = True
+ALLOWED_HOSTS = ['127.0.0.1', 'example.com']
 
 
 # Application definition
@@ -48,12 +52,11 @@ INSTALLED_APPS = [
     'mdeditor',
     'rest_framework',
     'rest_framework_jwt',
+    'tests_.apps.TestsConfig',
 
 
     # celery
     'djcelery',
-    'celery_app',
-    # 'celery_test_app.apps.CeleryTestAppConfig',
 ]
 
 MIDDLEWARE = [
@@ -67,6 +70,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'django_model.urls'
+APPEND_SLASH = True
 
 TEMPLATES = [
     {
@@ -105,16 +109,19 @@ DATABASES = {
     }
 }
 
-# redis 缓存
+# redis 缓存, django缓存带有层及目录
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://127.0.0.1:6379",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "CONNECTION_POOL_KWARGS": {"max_connections": 10, "decode_responses": False},
         }
     }
 }
+REDIS_IP = '127.0.0.1'
+REDIS_PORT = 6379
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -134,6 +141,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+REST_FRAMEWORK = {
+    "DEFAULT_FILTER_BACKENDS":("django_filters.rest_framework.DjangoFilterBackend",),
+    'DEFAULT_AUTHENTICATION_CLASSES':['Myauth.my_auth.MyAuth']    # token 认证
+}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -148,6 +160,9 @@ USE_L10N = True
 
 USE_TZ = True
 
+TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
+
+AUTH_USER_MODEL = 'Myauth.BaseUser'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
@@ -206,7 +221,7 @@ LOGGING = {
         'default': {
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',  # 保存到文件，自动切
-            'filename': os.path.join(LOG_PATH, "mysite_info.log"),  # 日志文件
+            'filename': os.path.join(LOG_PATH, "info.log"),  # 日志文件
             'maxBytes': 1024 * 1024 * 50,  # 日志大小 50M
             'backupCount': 3,  # 最多备份几个
             'formatter': 'standard',
@@ -216,7 +231,7 @@ LOGGING = {
         'error': {
             'level': 'ERROR',
             'class': 'logging.handlers.RotatingFileHandler',  # 保存到文件，自动切
-            'filename': os.path.join(LOG_PATH, "mysite_err.log"),  # 日志文件
+            'filename': os.path.join(LOG_PATH, "err.log"),  # 日志文件
             'maxBytes': 1024 * 1024 * 50,  # 日志大小 50M
             'backupCount': 5,
             'formatter': 'standard',
@@ -226,7 +241,7 @@ LOGGING = {
         'collect': {
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',  # 保存到文件，自动切
-            'filename': os.path.join(LOG_PATH, "mysite_collect.log"),
+            'filename': os.path.join(LOG_PATH, "collect.log"),
             'maxBytes': 1024 * 1024 * 50,  # 日志大小 50M
             'backupCount': 5,
             'formatter': 'collect',

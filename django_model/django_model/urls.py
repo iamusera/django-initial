@@ -15,9 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from celery_app import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('add/', views.addw, name='add')
+    path(r'test/', include("tests_.urls")),
+    path(r'user/', include("Myauth.urls")),
 ]

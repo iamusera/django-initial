@@ -7,7 +7,7 @@ CELERY_TIMEZONE = 'Asia/Shanghai'
 
 # 导入指定的任务模块
 CELERY_IMPORTS = {
-    # 'ccelery_app.tasks',
+    # 'celery_app.tasks',
     'celery_app.tasks',
 }
 # imports = [
