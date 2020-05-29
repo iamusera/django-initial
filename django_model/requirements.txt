@@ -21,7 +21,7 @@ backports.csv==1.0.7
 baidu-aip==2.2.15.0
 beautifulsoup4==4.8.1
 billiard==3.6.3.0
-bleach==3.1.0
+bleach==3.1.4
 blinker==1.4
 brotlipy==0.7.0
 bs4==0.0.1
