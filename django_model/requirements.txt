@@ -276,7 +276,7 @@ swagger-spec-validator==2.4.3
 tablib==0.13.0
 tabula-py==2.1.0
 tensorboard==1.11.0
-tensorflow==2.0.0
+tensorflow==2.0.1
 tensorflow-estimator==2.0.1
 termcolor==1.1.0
 terminado==0.8.2
