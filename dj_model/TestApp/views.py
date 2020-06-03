@@ -9,7 +9,7 @@ from django.db import connection
 # DRF
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.decorators import list_route  # abandon in 3.10, @action instead
+# from rest_framework.decorators import list_route  # abandon in 3.10, @action instead
 from rest_framework.decorators import action
 # 其他
 import logging
