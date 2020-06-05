@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'rest_framework_jwt',
     #------------------------#
     'MyAuth.apps.MyauthConfig',
-    'TestApp.apps.TestappConfig'
+    'TestApp.apps.TestappConfig',
+    'comments.apps.CommentsConfig',
 ]
 
 MIDDLEWARE = [
@@ -106,6 +107,7 @@ CACHES = {
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             "CONNECTION_POOL_KWARGS": {"max_connections": 10, "decode_responses": False},
+            'TIMEOUT': 60 * 10
         }
     }
 }
@@ -129,7 +131,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS":("django_filters.rest_framework.DjangoFilterBackend",),
-    # 'DEFAULT_AUTHENTICATION_CLASSES':['Myauth.my_auth.MyAuth']    # token 认证
+    # 'DEFAULT_AUTHENTICATION_CLASSES':['utils.drf_authcation.MyAuth']    # token 认证
 }
 
 # Internationalization
