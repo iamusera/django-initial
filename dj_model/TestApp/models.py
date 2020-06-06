@@ -16,7 +16,7 @@ class User(models.Model):
 
     class Meta:
         db_table = 'user'
-        ordering = ['-id']
+        ordering = ['id']
         verbose_name = "文章用户"
         verbose_name_plural = verbose_name
 

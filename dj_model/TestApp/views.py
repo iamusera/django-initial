@@ -136,3 +136,11 @@ class ArticlePage(ListViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
+
+@api_view(['POST', 'GET'])
+def api_vi(request):
+    queryset = Article.objects.all().order_by('id')
+    pg = MyPagination()
+    pager = pg.paginate_queryset(queryset=queryset, request=request)
+    serializer = ArticleSerializer(instance=pager, many=True)
+    return pg.get_paginated_response(serializer.data)

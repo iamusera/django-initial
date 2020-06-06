@@ -20,7 +20,7 @@ class GetToken(APIView):
                 'user_name': user_id,
             },
         }
-        ai_token = jwt.encode(dic, settings.SECRET_KEY, algorithm='HS256').decode('utf-8')
+        my_token = jwt.encode(dic, settings.SECRET_KEY, algorithm='HS256').decode('utf-8')
         key = "_".join(['Token', user_id])
-        cache.set(key, ai_token, 60*60)
-        return Response(status=200, data={'ai_token': ai_token})
+        cache.set(key, my_token, 60*60)
+        return Response(status=200, data={'my_token': my_token})
