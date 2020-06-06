@@ -7,6 +7,7 @@ router = routers.SimpleRouter()
 # routes.register("user", UserView)   @listview
 urlpatterns = [
     path(r"add/", views.addw),  # DRF不能注册函数型视图
+
 ]
 urlpatterns += router.urls
 

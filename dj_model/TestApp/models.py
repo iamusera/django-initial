@@ -5,7 +5,7 @@ from MyAuth.models import BaseUser
 
 
 class User(models.Model):
-    # 创建权限用户
+    # 创建基础用户
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         verbose_name='用户',
@@ -13,6 +13,7 @@ class User(models.Model):
         null=True,
         on_delete=models.CASCADE)
     nickname = models.CharField('昵称', max_length=100, blank=False, unique=True, null=False)
+
     class Meta:
         db_table = 'user'
         ordering = ['-id']
@@ -25,10 +26,16 @@ class User(models.Model):
 
 
 class ItemBase(models.Model):
+    # 多种相同结构表继承自抽象类
     owner = models.ForeignKey(User, related_name='%(class)s_related', on_delete=models.CASCADE)
     title = models.CharField(max_length=250)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    is_delete_status = (
+        ('0', '未删除'),
+        ('1', '删除')
+    )
+    is_delete = models.CharField(verbose_name='逻辑删除',choices=is_delete_status, max_length=10, default='0')
 
     class Meta:
         abstract = True
@@ -38,16 +45,27 @@ class Tags(models.Model):
     '''
     文章标签
     '''
-    name = models.CharField(max_length=20,verbose_name='tag_name')
-    number = models.IntegerField(default=1, verbose_name='num_tag')
-
-
-class Blog(ItemBase):
-    body = models.TextField()
-    tags = models.ManyToManyField(Tags, verbose_name=u'blog_tag')
+    name = models.CharField(max_length=20, verbose_name='tag_name')
+    # number = models.IntegerField(default=1, verbose_name='num_tag')
+    is_delete_status = (
+        ('0', '未删除'),
+        ('1', '删除')
+    )
+    is_delete = models.CharField(verbose_name='逻辑删除',choices=is_delete_status, max_length=10, default='0')
 
     class Meta:
-        db_table = 'article'
+        db_table = 'tags'
+        ordering = ['-id']
+        verbose_name = "标签"
+        verbose_name_plural = verbose_name
+
+
+class Article(ItemBase):
+    body = models.TextField()
+    tags = models.ManyToManyField(Tags, verbose_name=u'blog_tag') # many_to_many 会增加一个中间表
+
+    class Meta:
+        db_table = 'blog'
         ordering = ['-id']
         verbose_name = "文章"
         verbose_name_plural = verbose_name

@@ -1,5 +1,5 @@
 from django.db import models
-from TestApp.models import Blog
+from TestApp.models import Article
 from django.conf import settings
 from django.utils.timezone import now
 # Create your models here.
@@ -15,18 +15,21 @@ class Comment(models.Model):
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         verbose_name='author',
+        related_name='author',
         on_delete=models.CASCADE)
     article = models.ForeignKey(
-        Blog,
+        Article,
         verbose_name='blog',
+        related_name='article',
         on_delete=models.CASCADE)
     parent_comment = models.ForeignKey(
         'self',
         verbose_name="superior_comments",
+        related_name='comments',
         blank=True,
         null=True,
         on_delete=models.CASCADE)
-    is_enable = models.BooleanField(
+    is_view = models.BooleanField(
         'is_view', default=True, blank=False, null=False)
 
     class Meta:
