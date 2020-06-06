@@ -10,19 +10,21 @@ from django.db import connection
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import get_object_or_404
-# from rest_framework.decorators import list_route  # abandon in 3.10, @action instead
+from rest_framework.decorators import api_view  # list_view abandon in 3.10, @action instead
 from rest_framework.decorators import action
 # 其他
 import logging
 import json
 import mimetypes
+from TestApp.utils.filter import ArticleFilter
+from TestApp.serializers import *
 from TestApp.utils.tasks import *
 from collections import OrderedDict
 
 # el
 from MyAuth.models import *
 from TestApp.utils.pagenation import MyPagination
-
+from utils.PagePangtor import Pagination
 # Create your views here.
 
 logger = logging.getLogger(__name__)
@@ -44,7 +46,6 @@ class ReturnMsg():
 
 
 class ListViewSet(ModelViewSet):
-
     def get_queryset(self):
         query = self.queryset
         return query.filter(is_delete='0').order_by('id')
@@ -87,29 +88,51 @@ class ListViewSet(ModelViewSet):
 @require_http_methods(["GET"])
 def addw(request):
     c = add.delay(1, 2)
-    print('view里面', c)
     res = {
         'status': 200
     }
-    # session
     sess = request.session.items()
-    # cookie
     cooki = request.COOKIES['csrftoken']
     return HttpResponse(status=200, content=json.dumps(res), content_type="application/json,charset=utf-8")
 
 
 class BasicAPIView(APIView):
-    ...
+    queryset = Article.objects.all().order_by('id')
+    # 分页和筛选还是使用GenericViewSet方便
+
+    def get(self, request):
+        pg = MyPagination()
+        pager = pg.paginate_queryset(queryset=self.queryset, request=request, view=self)
+        serializer = ArticleSerializer(instance=pager, many=True)
+        # return Response(ReturnMsg(data=serializer.data).dict())
+        return pg.get_paginated_response(serializer.data)
 
 
 # @action(methods=['GET', 'POST'], detail=True)
 # action(methods=None, detail=None, url_path=None, url_name=None, **kwargs):
+# response 请使用HttpResponse/JSONRESPONSE, 不支持DRF的 Response
 # detail: 声明该action的路径是否与单一资源对应，及是否是xxx/<pk>/action方法名/
 # True 表示路径格式是xxx/<pk>/action方法名/
 # False 表示路径格式是xxx/action方法名/
-@action(methods=['GET', 'POST'], detail=True, url_path='/article_list/')
-def article_list():
 
-    return Response(data=ReturnMsg(msg='ok').dict())
+@action(methods=['GET', 'POST'], detail=True)
+def article_list(request):
+    return HttpResponse(status=200, content=json.dumps(ReturnMsg(data='ok').dict()), content_type="application/json,charset=utf-8")
 
+
+class ArticlePage(ListViewSet):
+    queryset = Article.objects.all()
+    pagination_class = MyPagination
+    # filter_class = ArticleFilter
+    serializer_class = ArticleSerializer
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
