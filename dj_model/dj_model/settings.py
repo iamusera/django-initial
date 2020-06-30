@@ -15,19 +15,16 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'pnta=44@x1b7h-5si(4umw4vpta%1e35)8$=3ktw#%h3qq_sja'
 
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -41,7 +38,8 @@ INSTALLED_APPS = [
     'djcelery',
     'rest_framework',
     'rest_framework_jwt',
-    #------------------------#
+    'django_db_reconnect',  # 事务或者其他autocommit=False非自动提交情况下将不会自动重连，否则可能导致连接丢失前的写入没有commit被丢弃
+    # ------------------------#
     'MyAuth.apps.MyauthConfig',
     'TestApp.apps.TestappConfig',
     'comments.apps.CommentsConfig',
@@ -77,7 +75,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'dj_model.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
@@ -88,6 +85,7 @@ DATABASES = {
     # }
     'default': {
         'ENGINE': 'django.db.backends.mysql',
+        'CONN_MAX_AGE': 10,   # 保持连接时间，如果超过mysql默认的8小时，是否出现2006错误。 如何重连？
         'HOST': '127.0.0.1',
         'PORT': 3306,
         'USER': 'root',
@@ -129,7 +127,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 REST_FRAMEWORK = {
-    "DEFAULT_FILTER_BACKENDS":("django_filters.rest_framework.DjangoFilterBackend",),
+    "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
     # 'DEFAULT_AUTHENTICATION_CLASSES':['utils.drf_authcation.MyAuth']    # token 认证
 }
 
@@ -163,7 +161,6 @@ MEDIA_URL = '/media/'
 
 # TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 DATE_TIME_FORMAT = '%Y-%m-%d'
-
 
 # ----------------------日志------------------------------- #
 # 日志路径
@@ -238,7 +235,7 @@ LOGGING = {
         }
     },
     'loggers': {
-       # 默认的logger应用如下配置
+        # 默认的logger应用如下配置
         'wwww': {
             'handlers': ['default', 'console', 'error'],  # 上线之后可以把'console'移除
             'level': 'DEBUG',
