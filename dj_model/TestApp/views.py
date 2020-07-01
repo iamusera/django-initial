@@ -93,8 +93,8 @@ def addw(request):
     res = {
         'status': 200
     }
-    sess = request.session.items()
-    cooki = request.COOKIES['csrftoken']
+    # sess = request.session.items()
+    # cooki = request.COOKIES['csrftoken']
     return HttpResponse(status=200, content=json.dumps(res), content_type="application/json,charset=utf-8")
 
 

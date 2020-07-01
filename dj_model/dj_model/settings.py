@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'djcelery',
     'rest_framework',
+    'debug_toolbar',
     'rest_framework_jwt',
     'django_db_reconnect',  # 事务或者其他autocommit=False非自动提交情况下将不会自动重连，否则可能导致连接丢失前的写入没有commit被丢弃
     # ------------------------#
@@ -51,12 +52,18 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'dj_model.urls'
+
+INTERNAL_IPS = ['127.0.0.1', ]
+DEBUG_TOOLBAR_CONFIG = {
+    "JQUERY_URL": '//cdn.bootcss.com/jquery/2.2.4/jquery.min.js',
+}
 
 TEMPLATES = [
     {
