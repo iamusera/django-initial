@@ -23,8 +23,9 @@ SECRET_KEY = 'pnta=44@x1b7h-5si(4umw4vpta%1e35)8$=3ktw#%h3qq_sja'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*', '127.0.0.1:*', '0.0.0.0:*']
 
 # Application definition
 

@@ -1,5 +1,7 @@
 # celery_config.py
 from celery.schedules import crontab
+from celery.schedules import timedelta
+
 
 BROKER_URL = 'redis://127.0.0.1:6379/1'
 CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/2'
@@ -9,15 +11,15 @@ CELERY_TIMEZONE = 'Asia/Shanghai'
 # 导入指定的任务模块
 CELERY_IMPORTS = {
     # 'celery_app.tasks',
-    'tests_.utils.tasks',
-    "TestAPP.utils.tasks"
+    # 'tests_.utils.tasks',
+    "TestApp.utils.tasks"
 }
 
 CELERYBEAT_SCHEDULE = {
     # 定时任务一：　每5分钟执行一次任务(refresh1)
     'refresh1': {
-        "task": "tests_.utils.tasks.heartbeat",
-        "schedule": crontab(seconds=2),
+        "task": "TestApp.utils.tasks.heartbeat",
+        'schedule':   timedelta(seconds=3),
         "args": (),
     },
     # # 定时任务二:　每天的凌晨2:00，执行任务(refresh2)
