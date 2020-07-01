@@ -62,7 +62,7 @@ ROOT_URLCONF = 'dj_model.urls'
 
 INTERNAL_IPS = ['127.0.0.1', ]
 DEBUG_TOOLBAR_CONFIG = {
-    "JQUERY_URL": '//cdn.bootcss.com/jquery/2.2.4/jquery.min.js',
+    "JQUERY_URL": 'http://code.jquery.com/jquery-2.1.1.min.js',
 }
 
 TEMPLATES = [
