@@ -20,17 +20,19 @@ from TestApp.utils.filter import ArticleFilter
 from TestApp.serializers import *
 from TestApp.utils.tasks import *
 from collections import OrderedDict
+from apscheduler.schedulers.background import BackgroundScheduler
 
 # el
 from MyAuth.models import *
 from TestApp.utils.pagenation import MyPagination
 from utils.PagePangtor import Pagination
+
 # Create your views here.
 
 logger = logging.getLogger(__name__)
 
 
-class ReturnMsg():
+class ReturnMsg(object):
     def __init__(self, code=200, msg='succeed', errors=None, data=None):
         self.code = code
         self.msg = msg
@@ -55,10 +57,10 @@ class ListViewSet(ModelViewSet):
         # Perform the lookup filtering.
         lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
         assert lookup_url_kwarg in self.kwargs, (
-            'Expected view %s to be called with a URL keyword argument '
-            'named "%s". Fix your URL conf, or set the `.lookup_field` '
-            'attribute on the view correctly.' %
-            (self.__class__.__name__, lookup_url_kwarg)
+                'Expected view %s to be called with a URL keyword argument '
+                'named "%s". Fix your URL conf, or set the `.lookup_field` '
+                'attribute on the view correctly.' %
+                (self.__class__.__name__, lookup_url_kwarg)
         )
         filter_kwargs = {self.lookup_field: self.kwargs[lookup_url_kwarg]}
         obj = get_object_or_404(queryset, **filter_kwargs)
@@ -98,6 +100,7 @@ def addw(request):
 
 class BasicAPIView(APIView):
     queryset = Article.objects.all().order_by('id')
+
     # 分页和筛选还是使用GenericViewSet方便
 
     def get(self, request):
@@ -117,7 +120,8 @@ class BasicAPIView(APIView):
 
 @action(methods=['GET', 'POST'], detail=True)
 def article_list(request):
-    return HttpResponse(status=200, content=json.dumps(ReturnMsg(data='ok').dict()), content_type="application/json,charset=utf-8")
+    return HttpResponse(status=200, content=json.dumps(ReturnMsg(data='ok').dict()),
+                        content_type="application/json,charset=utf-8")
 
 
 class ArticlePage(ListViewSet):
@@ -144,3 +148,15 @@ def api_vi(request):
     pager = pg.paginate_queryset(queryset=queryset, request=request)
     serializer = ArticleSerializer(instance=pager, many=True)
     return pg.get_paginated_response(serializer.data)
+
+
+def option():
+    cursor = connection.cursor()
+    cursor.close()
+    print('*********************** ok ***************************')
+
+
+sched = BackgroundScheduler()
+sched.add_job(option, 'interval', seconds=10, id='option')
+sched.start()
+print(sched.get_jobs())
