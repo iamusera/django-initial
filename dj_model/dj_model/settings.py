@@ -173,11 +173,15 @@ AUTH_USER_MODEL = 'MyAuth.BaseUser'
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 # 注意路径/的设置
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-]
-STATIC_ROOT = os.path.join(BASE_DIR, "/static/")
-MEDIA_ROOT = os.path.join(BASE_DIR, '/media/')
+if not DEBUG:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static').replace('\\', '/')
+# 非部署时，debug为True，使用以下代替STATIC_ROOT才能加载上传的图片
+else:
+    STATICFILES_DIRS = (
+        os.path.join(BASE_DIR, 'static').replace('\\', '/'),
+    )
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/').replace('\\', '/')
 MEDIA_URL = '/media/'
 
 # TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
