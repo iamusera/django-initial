@@ -29,7 +29,7 @@ from utils.PagePangtor import Pagination
 
 # Create your views here.
 
-logger = logging.getLogger(__name__)
+logger_collect = logging.getLogger(__name__)
 
 
 class ReturnMsg(object):
@@ -138,6 +138,7 @@ class ArticlePage(ListViewSet):
             return self.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(queryset, many=True)
+        logger_collect.info('************** info **************')
         return Response(serializer.data)
 
 
