@@ -157,7 +157,7 @@ def option():
     print('*********************** ok ***************************')
 
 
-sched = BackgroundScheduler()
-sched.add_job(option, 'interval', seconds=10, id='option')
-sched.start()
-print(sched.get_jobs())
+# sched = BackgroundScheduler()
+# sched.add_job(option, 'interval', seconds=10, id='option')
+# sched.start()
+# print(sched.get_jobs())

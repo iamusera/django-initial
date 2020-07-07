@@ -1,5 +1,6 @@
 # from django.shortcuts import render
-from django.shortcuts import redirect
+from django.shortcuts import redirect, reverse
+from django.http import HttpResponseRedirect    # 前后端不分离，重定向到页面用的多
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.core.cache import cache
@@ -11,25 +12,26 @@ from django.db import connection
 
 
 class Login(APIView):
+    def get(self, request):
+        return Response('redirect')
+
     def post(self, request):
         name = request.data.get("name")
         pw = request.data.get("pw")
 
-        user_id = request.GET.get('user_id')
+        # user_id = request.GET.get('user_id')
         dic = {
             'exp': int(time.time()) + 60*10,
             'data': {
-                'user_name': user_id,
+                'user_name': name,
             },
         }
         my_token = jwt.encode(dic, settings.SECRET_KEY, algorithm='HS256').decode('utf-8')
-        key = "_".join(['Token', user_id])
+        key = "_".join(['Token', name])
         cache.set(key, my_token, 60*60)
         return Response(status=200, data={'my_token': my_token})
 
 
 class Register(APIView):
     def post(self, request):
-        name = request.data.get("name")
-        pw = request.data.get("pw")
-        return redirect('login')    # 重定向到登录，并把账号密码作为参数传递过去
+        return redirect(reverse('login'))

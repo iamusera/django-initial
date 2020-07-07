@@ -19,6 +19,7 @@ django-import-export==2.0.2
 django-jsonfield==1.4.0
 django-mdeditor==0.1.18
 django-redis==4.10.0
+django-redis==4.11.0
 django-redis-cache==2.1.1
 django-reversion==3.0.4
 django-uuslug==1.2.0
