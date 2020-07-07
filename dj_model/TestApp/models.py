@@ -14,6 +14,9 @@ class User(models.Model):
         on_delete=models.CASCADE)
     nickname = models.CharField('昵称', max_length=100, blank=False, unique=True, null=False)
 
+    def __str__(self):
+        return self.nickname
+
     class Meta:
         db_table = 'user'
         ordering = ['id']
@@ -37,6 +40,9 @@ class ItemBase(models.Model):
     )
     is_delete = models.CharField(verbose_name='逻辑删除',choices=is_delete_status, max_length=10, default='0')
 
+    def __str__(self):
+        return self.owner
+
     class Meta:
         abstract = True
 
@@ -53,6 +59,9 @@ class Tags(models.Model):
     )
     is_delete = models.CharField(verbose_name='逻辑删除',choices=is_delete_status, max_length=10, default='0')
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         db_table = 'tags'
         ordering = ['-id']
@@ -63,6 +72,9 @@ class Tags(models.Model):
 class Article(ItemBase):
     body = models.TextField()
     tags = models.ManyToManyField(Tags, verbose_name=u'blog_tag') # many_to_many 会增加一个中间表
+
+    def __str__(self):
+        return self.title
 
     class Meta:
         db_table = 'blog'
