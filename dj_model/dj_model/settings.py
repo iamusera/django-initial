@@ -58,7 +58,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
+# session的存储配置
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+SESSION_CACHE_ALIAS = 'default'
+# session的配置
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 10000   # Session的cookie失效日期（2周）（默认）
 SESSION_COOKIE_NAME = "session"  # Session的cookie保存在浏览器上时的key，即：sessionid＝随机字符串（默认）
 # SESSION_COOKIE_PATH = "/"  # Session的cookie保存的路径（默认）
@@ -146,7 +149,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
-    # 'DEFAULT_AUTHENTICATION_CLASSES':['utils.drf_authcation.MyAuth']    # token 认证
+    # 'DEFAULT_AUTHENTICATION_CLASSES':['utils.drf_authcation.MyAuth']    # token 认证，这样不对
 }
 
 # Internationalization
@@ -163,7 +166,7 @@ USE_L10N = True
 USE_TZ = True
 
 TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
-
+AUTHENTICATION_BACKENDS = ["MyAuth.user_login_backend.EmailOrUsernameModelBackend"]     # 自定义的登录认证
 AUTH_USER_MODEL = 'MyAuth.BaseUser'
 
 # Static files (CSS, JavaScript, Images)

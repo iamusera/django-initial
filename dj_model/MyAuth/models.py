@@ -2,6 +2,8 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.utils.timezone import now
 from django.db import models
 import uuid
+
+
 # Create your views here.
 
 
@@ -17,7 +19,7 @@ class BaseUser(AbstractUser):
         ('0', '未删除'),
         ('1', '删除')
     )
-    is_delete = models.CharField(verbose_name='逻辑删除',choices=is_delete_status, max_length=10, default='0')
+    is_delete = models.CharField(verbose_name='逻辑删除', choices=is_delete_status, max_length=10, default='0')
 
     def __str__(self):
         return self.nickname
@@ -26,4 +28,3 @@ class BaseUser(AbstractUser):
         ordering = ['-id']
         verbose_name = "用户"
         verbose_name_plural = verbose_name
-
