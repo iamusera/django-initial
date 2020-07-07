@@ -19,6 +19,7 @@ django-import-export==2.0.2
 django-jsonfield==1.4.0
 django-mdeditor==0.1.18
 django-redis==4.10.0
+django-redis-cache==2.1.1
 django-reversion==3.0.4
 django-uuslug==1.2.0
 djangorestframework==3.11.0
@@ -32,7 +33,7 @@ PyMySQL==0.9.3
 python-slugify==4.0.0
 pytz==2020.1
 redis==3.5.0
-six==1.15.0
+six==1.10.0
 sqlparse==0.3.1
 tablib==2.0.0
 text-unidecode==1.3
