@@ -149,7 +149,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
-    # 'DEFAULT_AUTHENTICATION_CLASSES':['utils.drf_authcation.MyAuth']    # token 认证，这样不对
 }
 
 # Internationalization
