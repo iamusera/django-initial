@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'djcelery',
     'rest_framework',
     'debug_toolbar',
+    'corsheaders',  # 跨域
     'rest_framework_jwt',
     'django_db_reconnect',  # 事务或者其他autocommit=False非自动提交情况下将不会自动重连，否则可能导致连接丢失前的写入没有commit被丢弃
     # ------------------------#
@@ -62,7 +63,7 @@ MIDDLEWARE = [
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 SESSION_CACHE_ALIAS = 'default'
 # session的配置
-SESSION_COOKIE_AGE = 60 * 60 * 24 * 10000   # Session的cookie失效日期（2周）（默认）
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 10000  # Session的cookie失效日期（2周）（默认）
 SESSION_COOKIE_NAME = "session"  # Session的cookie保存在浏览器上时的key，即：sessionid＝随机字符串（默认）
 # SESSION_COOKIE_PATH = "/"  # Session的cookie保存的路径（默认）
 # SESSION_COOKIE_DOMAIN = None  # Session的cookie保存的域名（默认）
@@ -106,7 +107,7 @@ DATABASES = {
     # }
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'CONN_MAX_AGE': 10,   # 保持连接时间，如果超过mysql默认的8小时，是否出现2006错误。 如何重连？
+        'CONN_MAX_AGE': 10,  # 保持连接时间，如果超过mysql默认的8小时，是否出现2006错误。 如何重连？
         'HOST': '127.0.0.1',
         'PORT': 3306,
         'USER': 'root',
@@ -165,7 +166,7 @@ USE_L10N = True
 USE_TZ = True
 
 TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
-AUTHENTICATION_BACKENDS = ["MyAuth.user_login_backend.EmailOrUsernameModelBackend"]     # 自定义的登录认证
+AUTHENTICATION_BACKENDS = ["MyAuth.user_login_backend.EmailOrUsernameModelBackend"]  # 自定义的登录认证
 AUTH_USER_MODEL = 'MyAuth.BaseUser'
 
 # Static files (CSS, JavaScript, Images)
@@ -273,31 +274,45 @@ LOGGING = {
     },
 }
 
-# 未登录重定向url
+# 未登录重定向url、
 # REDIRECT_FIELD_NAME = 'login/'
 
 
-#############################
-# celery 配置信息 start
-#############################
-# import djcelery
-# djcelery.setup_loader()
-# BROKER_URL = 'redis://127.0.0.1:6379/1'
-# CELERY_IMPORTS = ('celery_test_app.tasks')
-# CELERY_TIMEZONE = 'Asia/Shanghai'
-# CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
-# from celery.schedules import crontab
-# from celery.schedules import timedelta
-#
-# CELERYBEAT_SCHEDULE = {    #定时器策略
-#     #定时任务一：　每隔30s运行一次
-#     u'测试定时器1': {
-#         "task": "art.tasks.tsend_email",
-#         #"schedule": crontab(minute='*/2'),  # or 'schedule':   timedelta(seconds=3),
-#         "schedule":timedelta(seconds=30),
-#         "args": (),
-#     },
-# }
-#############################
-# celery 配置信息 end
-#############################
+#############  跨域配置  #############
+# 全部允许配置
+CORS_ORIGIN_ALLOW_ALL = True
+
+# 白名单配置
+CORS_ORIGIN_WHITELIST = (
+    '127.0.0.1:8080',
+    'localhost:8080',
+)
+
+# 允许cookie
+CORS_ALLOW_CREDENTIALS = True  # 指明在跨域访问中，后端是否支持对cookie的操作
+
+# 允许的请求方式
+CORS_ALLOW_METHODS = (
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+    'VIEW',
+)
+
+# 允许的请求头
+CORS_ALLOW_HEADERS = (
+    'XMLHttpRequest',
+    'X_FILENAME',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+    'Pragma',
+)
